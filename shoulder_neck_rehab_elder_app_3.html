@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>肩頸痠痛復健指南 - 長者版</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #FDFBF8; color: #2C2C2A; line-height: 1.6; }
+  :root {
+    --green: #3B6D11; --green-light: #EAF3DE; --green-mid: #639922;
+    --amber: #BA7517; --amber-light: #FAEEDA;
+    --red-light: #FCEBEB; --red-text: #A32D2D;
+    --border: rgba(0,0,0,0.12);
+    --bg-primary: #ffffff; --bg-secondary: #F1EFE8;
+    --text-primary: #2C2C2A; --text-secondary: #5F5E5A;
+    --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
+  }
+  .app { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .app-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--border); }
+  .app-title { font-size: 28px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+  .app-subtitle { font-size: 17px; color: var(--text-secondary); }
+  .tab-bar { display: flex; gap: 8px; margin-bottom: 2rem; background: var(--bg-secondary); padding: 6px; border-radius: var(--radius-lg); }
+  .tab-btn { flex: 1; padding: 14px 8px; font-size: 15px; font-weight: 500; border: none; border-radius: var(--radius-md); background: transparent; cursor: pointer; color: var(--text-secondary); transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .tab-btn .tab-icon { font-size: 20px; }
+  .tab-btn.active { background: var(--bg-primary); color: var(--green); border: 0.5px solid var(--border); }
+  .section { display: none; }
+  .section.active { display: block; }
+  .exercise-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .filter-btn { padding: 10px 18px; font-size: 15px; border: 0.5px solid var(--border); border-radius: 999px; background: var(--bg-primary); cursor: pointer; color: var(--text-secondary); transition: all 0.2s; }
+  .filter-btn.active { background: var(--green-light); color: var(--green); border-color: var(--green-mid); font-weight: 500; }
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .exercise-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; cursor: pointer; transition: border-color 0.2s; }
+  .exercise-card:hover { border-color: var(--green-mid); }
+  .card-tag { display: inline-block; font-size: 13px; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; font-weight: 500; }
+  .tag-strength { background: #E6F1FB; color: #185FA5; }
+  .tag-stretch { background: var(--green-light); color: var(--green); }
+  .tag-relax { background: var(--amber-light); color: var(--amber); }
+  .card-title { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+  .card-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.5; }
+  .card-cta { margin-top: 12px; font-size: 14px; color: var(--green); font-weight: 500; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--bg-primary); border-radius: var(--radius-xl); max-width: 620px; width: 100%; padding: 2rem; position: relative; margin: auto; }
+  .modal-close { position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px; border-radius: 50%; border: 0.5px solid var(--border); background: var(--bg-secondary); cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+  .modal-title { font-size: 22px; font-weight: 500; margin-bottom: 6px; color: var(--text-primary); }
+  .modal-tag { margin-bottom: 1rem; }
+  .modal-desc { font-size: 16px; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+  .modal-section-title { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 10px; }
+  .steps-list { list-style: none; margin-bottom: 1.5rem; }
+  .steps-list li { display: flex; gap: 12px; margin-bottom: 10px; font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
+  .step-num { min-width: 26px; height: 26px; border-radius: 50%; background: var(--green-light); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+  .duration-box { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 1.5rem; font-size: 16px; color: var(--text-primary); }
+  .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  .info-card { padding: 14px; border-radius: var(--radius-md); font-size: 15px; line-height: 1.5; }
+  .info-benefit { background: var(--green-light); color: var(--green); }
+  .info-risk { background: var(--amber-light); color: var(--amber); }
+  .info-card-label { font-weight: 500; margin-bottom: 4px; }
+  .video-section { border-top: 0.5px solid var(--border); padding-top: 1.25rem; }
+  .video-section-label { font-size: 15px; font-weight: 500; color: var(--text-secondary); margin-bottom: 10px; }
+  .video-link { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fff8f0; border: 0.5px solid #e8d5b5; border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 15px; margin-bottom: 8px; transition: border-color 0.2s; }
+  .video-link:hover { border-color: var(--amber); }
+  .video-link:last-child { margin-bottom: 0; }
+  .yt-badge { min-width: 34px; height: 34px; background: #FF0000; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .yt-badge svg { width: 14px; height: 14px; fill: white; }
+  .video-meta { display: flex; flex-direction: column; }
+  .video-title-text { font-weight: 500; color: var(--text-primary); line-height: 1.4; }
+  .video-channel-text { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .safety-section { padding: 1rem; }
+  .safety-alert { background: var(--red-light); border-left: 3px solid var(--red-text); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+  .safety-alert-title { font-size: 17px; font-weight: 500; color: var(--red-text); margin-bottom: 10px; }
+  .safety-list { list-style: none; }
+  .safety-list li { font-size: 16px; color: #7A2222; padding: 6px 0; border-bottom: 0.5px solid #F7C1C1; display: flex; gap: 10px; line-height: 1.5; }
+  .safety-list li:last-child { border-bottom: none; }
+  .safety-list li::before { content: "!"; min-width: 22px; height: 22px; background: var(--red-text); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+  .tip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 1rem; }
+  .tip-card { background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 1rem; font-size: 15px; color: var(--text-secondary); line-height: 1.5; }
+  .tip-card strong { display: block; font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+  .assessment-form { max-width: 560px; margin: 0 auto; }
+  .question-block { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .question-text { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: 1rem; }
+  .check-label { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--border); cursor: pointer; font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
+  .check-label:last-child { border-bottom: none; }
+  .check-label input { margin-top: 4px; width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--green); }
+  .submit-btn { width: 100%; padding: 16px; font-size: 17px; font-weight: 500; border: none; border-radius: var(--radius-md); background: var(--green); color: white; cursor: pointer; }
+  .result-box { border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 1.5rem; }
+  .result-safe { background: var(--green-light); border: 0.5px solid var(--green-mid); }
+  .result-unsafe { background: var(--red-light); border: 0.5px solid var(--red-text); }
+  .result-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+  .result-safe .result-title { color: var(--green); }
+  .result-unsafe .result-title { color: var(--red-text); }
+  .result-body { font-size: 16px; line-height: 1.6; }
+  .result-safe .result-body { color: #27500A; }
+  .result-unsafe .result-body { color: #7A2222; }
+  .reset-btn { margin-top: 1rem; padding: 12px 24px; font-size: 15px; border: 0.5px solid var(--border); border-radius: var(--radius-md); background: var(--bg-secondary); cursor: pointer; color: var(--text-secondary); }
+  @media (max-width: 480px) {
+    .tab-btn { font-size: 13px; padding: 12px 4px; }
+    .info-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="app-header">
+    <div class="app-title">肩頸痠痛復健指南</div>
+    <div class="app-subtitle">物理治療師推薦 · 專為長者設計 · 附示範影片連結</div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('exercises')" id="tab-exercises">
+      <span class="tab-icon">🏃</span><span>復健運動</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('assessment')" id="tab-assessment">
+      <span class="tab-icon">✓</span><span>自我評估</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('safety')" id="tab-safety">
+      <span class="tab-icon">⚠</span><span>安全須知</span>
+    </button>
+  </div>
+
+  <div id="sec-exercises" class="section active">
+    <div class="exercise-filter">
+      <button class="filter-btn active" onclick="filterExercises('all',this)">全部</button>
+      <button class="filter-btn" onclick="filterExercises('肌力訓練',this)">肌力訓練</button>
+      <button class="filter-btn" onclick="filterExercises('伸展運動',this)">伸展運動</button>
+      <button class="filter-btn" onclick="filterExercises('放鬆運動',this)">放鬆運動</button>
+    </div>
+    <div class="exercise-grid" id="exercise-grid"></div>
+  </div>
+
+  <div id="sec-assessment" class="section">
+    <div class="assessment-form">
+      <div id="assess-form-wrap">
+        <div class="question-block">
+          <div class="question-text">目前是否有以下「警示症狀」？（可複選）</div>
+          <label class="check-label"><input type="checkbox" name="rf" value="1"> 手臂或腿部出現麻木、無力</label>
+          <label class="check-label"><input type="checkbox" name="rf" value="2"> 疼痛劇烈，無法稍微移動</label>
+          <label class="check-label"><input type="checkbox" name="rf" value="3"> 伴隨發燒、體重驟降、頭暈嘔吐</label>
+          <label class="check-label"><input type="checkbox" name="rf" value="4"> 近期有跌倒或外傷</label>
+          <label class="check-label"><input type="checkbox" name="rf" value="none"> 以上都沒有</label>
+        </div>
+        <button class="submit-btn" onclick="runAssessment()">查看評估結果</button>
+      </div>
+      <div id="assess-result" style="display:none;">
+        <div id="result-box" class="result-box">
+          <div class="result-title" id="result-title"></div>
+          <div class="result-body" id="result-body"></div>
+        </div>
+        <button class="reset-btn" onclick="resetAssessment()">重新評估</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sec-safety" class="section safety-section">
+    <div class="safety-alert">
+      <div class="safety-alert-title">遇到以下情況，請停止運動並就醫</div>
+      <ul class="safety-list">
+        <li>急性劇痛或發炎期，稍微移動即加劇疼痛</li>
+        <li>手臂、腿部出現明顯麻木或無力感</li>
+        <li>伴隨發燒、體重不明減輕、頭暈噁心</li>
+        <li>近期有跌倒、撞傷等外傷</li>
+        <li>有腫瘤、類風濕性關節炎或感染等病史</li>
+        <li>運動後出現新症狀或症狀明顯加劇</li>
+      </ul>
+    </div>
+    <div style="margin-top:1.5rem;">
+      <div style="font-size:18px;font-weight:500;color:#2C2C2A;margin-bottom:1rem;">長者運動安全小叮嚀</div>
+      <div class="tip-grid">
+        <div class="tip-card"><strong>先熱身再運動</strong>活動前5分鐘輕輕活動關節，避免直接做大動作</div>
+        <div class="tip-card"><strong>動作緩慢為主</strong>速度不要過快，避免突然大幅度轉動頸部</div>
+        <div class="tip-card"><strong>感覺疼痛就停</strong>輕微酸脹是正常，但不應出現尖銳或刺痛感</div>
+        <div class="tip-card"><strong>保持正常呼吸</strong>不要憋氣，運動時保持均勻呼吸</div>
+        <div class="tip-card"><strong>選擇穩固椅子</strong>坐姿運動請選有靠背的穩固椅子</div>
+        <div class="tip-card"><strong>定期回診追蹤</strong>居家復健不代替定期就醫，持續不適請就診</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalIfOutside(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">x</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+var exercises = [
+  { name:"頭部側向阻力", category:"肌力訓練", desc:"手掌輕壓頭側，訓練頸部側邊肌肉，增加頸椎穩定性。",
+    steps:["坐直，頭部保持正中。","右手掌貼近右側太陽穴。","頭輕輕向右傾，同時手掌施加反向阻力，讓頭維持不動。","感受頸部右側收縮，左側同法進行。"],
+    duration:"每側維持 5–10 秒，重複 10 次，每日 3 回合。",
+    benefit:"強化頸部側肌，增加頸椎穩定性。", risk:"施力過猛可能加劇疼痛，力道保持溫和。",
+    videos:[
+      { title:"搜尋「頸部側向阻力訓練 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E9%A0%B8%E9%83%A8%E5%81%B4%E5%90%91%E9%98%BB%E5%8A%9B%E8%A8%93%E7%B7%B4+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「啾c物理治療師 頸椎保養運動」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E9%A0%B8%E6%A4%8E%E4%BF%9D%E9%A4%8A%E9%81%8B%E5%8B%95" }
+    ]
+  },
+  { name:"頭部後向阻力", category:"肌力訓練", desc:"雙手交疊放頭後，強化頸部後側肌群，改善頭部前傾。",
+    steps:["坐直，雙手交疊置於頭後方。","頭輕輕向後頂，雙手往前施力，使頭維持不動。","感受後頸肌肉用力收縮。","過程中保持呼吸，不要憋氣。"],
+    duration:"維持 5–10 秒，重複 10 次，每日 3 回合。",
+    benefit:"強化後頸肌群，改善頭部前傾（烏龜頸）。", risk:"頭部前傾過深可能造成不適，保持頭直立。",
+    videos:[
+      { title:"搜尋「頸部後向阻力訓練 縮下巴運動」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E9%A0%B8%E9%83%A8%E5%BE%8C%E5%90%91%E9%98%BB%E5%8A%9B+%E7%B8%AE%E4%B8%8B%E5%B7%B4%E9%81%8B%E5%8B%95+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82" },
+      { title:"搜尋「啾c物理治療師 脖子前傾 縮下巴」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E8%84%96%E5%AD%90%E5%89%8D%E5%82%BE+%E7%B8%AE%E4%B8%8B%E5%B7%B4" }
+    ]
+  },
+  { name:"肩胛內縮運動", category:"肌力訓練", desc:"向後夾緊肩胛骨，強化上背肌群，改善圓肩駝背。",
+    steps:["站姿或坐姿，上半身挺直。","緩慢將兩側肩胛骨往中間及下方夾緊，想像夾住一支筆。","挺胸，避免聳肩。","感受上背部明顯收縮後，緩緩放鬆。"],
+    duration:"維持 20–30 秒，重複 5 次，每日 3 回合。",
+    benefit:"強化背部肌群，改善圓肩與駝背。", risk:"過度用力可能造成背部緊繃，力道適中即可。",
+    videos:[
+      { title:"搜尋「肩胛骨內縮夾背運動 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E8%82%A9%E8%83%9B%E9%AA%A8%E5%85%A7%E7%B8%AE%E5%A4%BE%E8%83%8C%E9%81%8B%E5%8B%95+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「啾c物理治療師 肩胛骨訓練 圓肩」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E8%82%A9%E8%83%9B%E9%AA%A8%E8%A8%93%E7%B7%B4+%E5%9C%93%E8%82%A9" }
+    ]
+  },
+  { name:"頸部旋轉伸展", category:"伸展運動", desc:"緩慢轉動頭部，增加頸椎活動度，緩解僵硬。",
+    steps:["坐直，眼睛平視前方。","頭緩慢轉向一側，感覺對側頸部有輕微伸展。","末端停留，再緩慢回正。","換另一側重複。"],
+    duration:"每側維持 20–30 秒，各重複 5 次，每日 3 回合。",
+    benefit:"增加頸椎旋轉活動度，緩解肌肉僵硬。", risk:"動作過快可能拉傷，旋轉到位後請緩慢停住。",
+    videos:[
+      { title:"搜尋「頸部旋轉伸展 活動度 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E9%A0%B8%E9%83%A8%E6%97%8B%E8%BD%89%E4%BC%B8%E5%B1%95+%E6%B4%BB%E5%8B%95%E5%BA%A6+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「啾c物理治療師 頸部活動度 椅子拉筋」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E9%A0%B8%E9%83%A8%E6%B4%BB%E5%8B%95%E5%BA%A6+%E6%A4%85%E5%AD%90%E6%8B%89%E7%AD%8B" }
+    ]
+  },
+  { name:"上斜方肌伸展", category:"伸展運動", desc:"針對上斜方肌與提肩胛肌的深層伸展，有效緩解肩頸痠痛。",
+    steps:["坐姿，右手抓住椅緣固定肩膀。","頭向左側轉 45 度，下巴緩慢靠近胸口。","左手輕放頭後，溫和向左下方施壓。","感受右後側頸部深層伸展，保持肩膀不聳起。"],
+    duration:"每側維持 10–30 秒，各重複 3 次，每日 3 回合。",
+    benefit:"深層伸展上斜方肌，緩解長期肩頸僵硬。", risk:"過度拉扯可能拉傷，手部力道保持溫和。",
+    videos:[
+      { title:"搜尋「上斜方肌伸展 提肩胛肌 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E4%B8%8A%E6%96%9C%E6%96%B9%E8%82%8C%E4%BC%B8%E5%B1%95+%E6%8F%90%E8%82%A9%E8%83%9B%E8%82%8C+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「肩頸側邊伸展 物理治療師 教學」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E8%82%A9%E9%A0%B8%E5%81%B4%E9%82%8A%E4%BC%B8%E5%B1%95+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E6%95%99%E5%AD%B8" }
+    ]
+  },
+  { name:"胸椎挺直伸展", category:"伸展運動", desc:"雙手向上伸展，拉伸胸椎，改善駝背姿勢。",
+    steps:["站姿，雙腳與肩同寬，上半身挺直。","雙手十指交扣，掌心朝外向上伸直過頭頂。","盡量向上延伸，感受胸椎被拉直。","保持下巴微收，不要聳肩。"],
+    duration:"維持 20–30 秒，重複 5 次，每日 3 回合。",
+    benefit:"改善胸椎活動度，矯正駝背。", risk:"頸部前傾可能加劇頸部壓力，保持下巴微收。",
+    videos:[
+      { title:"搜尋「胸椎伸展 駝背矯正 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E8%83%B8%E6%A4%8E%E4%BC%B8%E5%B1%95+%E9%A7%9D%E8%83%8C%E7%9F%AF%E6%AD%A3+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「啾c物理治療師 胸椎活動度 圓肩駝背」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E8%83%B8%E6%A4%8E%E6%B4%BB%E5%8B%95%E5%BA%A6+%E5%9C%93%E8%82%A9%E9%A7%9D%E8%83%8C" }
+    ]
+  },
+  { name:"聳肩放鬆運動", category:"放鬆運動", desc:"聳肩後放鬆，釋放上斜方肌張力，可隨時隨地進行。",
+    steps:["坐直或站直，雙臂自然垂放。","緩慢將雙肩向上提起，盡量靠近耳朵。","維持聳肩姿勢 6 秒。","完全放鬆，讓肩膀自然下沉。"],
+    duration:"每次維持 6 秒，可重複多次，每日隨時進行。",
+    benefit:"釋放上斜方肌張力，立即緩解肩頸緊繃。", risk:"無特殊風險，適合長者隨時進行。",
+    videos:[
+      { title:"搜尋「聳肩放鬆運動 上斜方肌 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E8%81%B3%E8%82%A9%E6%94%BE%E9%AC%86%E9%81%8B%E5%8B%95+%E4%B8%8A%E6%96%9C%E6%96%B9%E8%82%8C+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「啾c物理治療師 肩頸放鬆 聳肩訓練」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E8%82%A9%E9%A0%B8%E6%94%BE%E9%AC%86+%E8%81%B3%E8%82%A9" }
+    ]
+  },
+  { name:"貼牆站立姿勢矯正", category:"放鬆運動", desc:"靠牆站立，幫助身體記憶正確的脊椎對齊姿勢。",
+    steps:["背對牆壁站立，腳跟離牆約 15 公分。","確保臀部、上背部和頭後側輕貼牆壁。","收緊腹部，下巴微收，眼睛平視前方。","保持自然呼吸，感受脊椎拉直。"],
+    duration:"維持 3 分鐘，每日 1 次。",
+    benefit:"矯正駝背、圓肩與烏龜頸，建立正確姿勢習慣。", risk:"無特殊風險，但腰椎不適者請諮詢醫師後進行。",
+    videos:[
+      { title:"搜尋「貼牆站立姿勢矯正 烏龜頸 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E8%B2%BC%E7%89%86%E7%AB%99%E7%AB%8B%E5%A7%BF%E5%8B%A2%E7%9F%AF%E6%AD%A3+%E7%83%8F%E9%BE%9C%E9%A0%B8+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" },
+      { title:"搜尋「頸椎姿勢矯正 駝背 物理治療師 教學」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E9%A0%B8%E6%A4%8E%E5%A7%BF%E5%8B%A2%E7%9F%AF%E6%AD%A3+%E9%A7%9D%E8%83%8C+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" }
+    ]
+  },
+  { name:"椅子上頸部側伸展", category:"放鬆運動", desc:"坐在椅子上輕鬆進行的頸部側邊伸展，最適合長者。",
+    steps:["正坐在有靠背的椅子上，雙腳平放地面。","右手抓住椅緣穩定肩膀。","左手從頭頂繞過，輕放在右耳上方。","緩慢將頭拉向左側，感受右頸部伸展。","肩膀保持放鬆不聳起。"],
+    duration:"每側維持 15–30 秒，各重複 5 次，每日可多次進行。",
+    benefit:"緩解頸部與肩膀肌肉痠痛，動作溫和安全。", risk:"肩膀聳起會影響效果，時刻保持肩部放鬆。",
+    videos:[
+      { title:"搜尋「啾c物理治療師 椅子拉筋 脖子筋膜放鬆」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E5%95%BEc%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB+%E6%A4%85%E5%AD%90%E6%8B%89%E7%AD%8B+%E8%84%96%E5%AD%90%E7%AD%8B%E8%86%9C%E6%94%BE%E9%AC%86" },
+      { title:"搜尋「頸部側邊伸展 椅子 長者 物理治療師」", channel:"YouTube 搜尋結果", url:"https://www.youtube.com/results?search_query=%E9%A0%B8%E9%83%A8%E5%81%B4%E9%82%8A%E4%BC%B8%E5%B1%95+%E6%A4%85%E5%AD%90+%E9%95%B7%E8%80%85+%E7%89%A9%E7%90%86%E6%B2%BB%E7%99%82%E5%B8%AB" }
+    ]
+  }
+];
+
+var tagClass = { "肌力訓練":"tag-strength", "伸展運動":"tag-stretch", "放鬆運動":"tag-relax" };
+
+function ytIcon() {
+  return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="white"/></svg>';
+}
+
+function renderGrid(filter) {
+  var grid = document.getElementById('exercise-grid');
+  var list = filter === 'all' ? exercises : exercises.filter(function(e){ return e.category === filter; });
+  grid.innerHTML = list.map(function(ex) {
+    var idx = exercises.indexOf(ex);
+    return '<div class="exercise-card" onclick="openModal(' + idx + ')">' +
+      '<span class="card-tag ' + tagClass[ex.category] + '">' + ex.category + '</span>' +
+      '<div class="card-title">' + ex.name + '</div>' +
+      '<div class="card-desc">' + ex.desc + '</div>' +
+      '<div class="card-cta">點擊查看步驟與影片 \u2192</div>' +
+      '</div>';
+  }).join('');
+}
+
+function filterExercises(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderGrid(cat);
+}
+
+function openModal(idx) {
+  var ex = exercises[idx];
+  var steps = ex.steps.map(function(s,i){
+    return '<li><span class="step-num">'+(i+1)+'</span><span>'+s+'</span></li>';
+  }).join('');
+  var videos = ex.videos.map(function(v){
+    return '<a class="video-link" href="'+v.url+'" target="_blank" rel="noopener">' +
+      '<div class="yt-badge">'+ytIcon()+'</div>' +
+      '<div class="video-meta">' +
+        '<span class="video-title-text">'+v.title+'</span>' +
+        '<span class="video-channel-text">'+v.channel+'</span>' +
+      '</div></a>';
+  }).join('');
+  document.getElementById('modal-content').innerHTML =
+    '<div class="modal-title">'+ex.name+'</div>' +
+    '<div class="modal-tag"><span class="card-tag '+tagClass[ex.category]+'">'+ex.category+'</span></div>' +
+    '<div class="modal-desc">'+ex.desc+'</div>' +
+    '<div class="modal-section-title">動作步驟</div>' +
+    '<ul class="steps-list">'+steps+'</ul>' +
+    '<div class="modal-section-title">頻率與組數</div>' +
+    '<div class="duration-box">'+ex.duration+'</div>' +
+    '<div class="info-row">' +
+      '<div class="info-card info-benefit"><div class="info-card-label">效益</div>'+ex.benefit+'</div>' +
+      '<div class="info-card info-risk"><div class="info-card-label">注意事項</div>'+ex.risk+'</div>' +
+    '</div>' +
+    '<div class="video-section">' +
+      '<div class="video-section-label">▶ 點擊搜尋相關示範影片（將在 YouTube 開啟）</div>' +
+      videos +
+    '</div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalIfOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+function switchTab(tab) {
+  ['exercises','assessment','safety'].forEach(function(t){
+    document.getElementById('sec-'+t).classList.remove('active');
+    document.getElementById('tab-'+t).classList.remove('active');
+  });
+  document.getElementById('sec-'+tab).classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function runAssessment() {
+  var checked = Array.from(document.querySelectorAll('input[name="rf"]:checked')).map(function(i){ return i.value; });
+  var hasRF = checked.some(function(v){ return v !== 'none'; });
+  document.getElementById('assess-form-wrap').style.display = 'none';
+  var rb = document.getElementById('result-box');
+  if (hasRF) {
+    rb.className = 'result-box result-unsafe';
+    document.getElementById('result-title').textContent = '建議就醫評估後再進行復健';
+    document.getElementById('result-body').textContent = '您勾選的症狀可能是較嚴重問題的警訊。為安全起見，強烈建議先諮詢醫師或物理治療師進行詳細評估，獲得許可後再開始居家復健。';
+  } else {
+    rb.className = 'result-box result-safe';
+    document.getElementById('result-title').textContent = '初步評估：可以開始復健運動';
+    document.getElementById('result-body').textContent = '您目前沒有明顯的警示症狀，可以嘗試本指南的復健運動。請記住，運動過程中若出現不適，應立即停止並諮詢專業人士。';
+  }
+  document.getElementById('assess-result').style.display = 'block';
+}
+
+function resetAssessment() {
+  document.querySelectorAll('input[name="rf"]').forEach(function(i){ i.checked = false; });
+  document.getElementById('assess-form-wrap').style.display = 'block';
+  document.getElementById('assess-result').style.display = 'none';
+}
+
+renderGrid('all');
+</script>
+</body>
+</html>
